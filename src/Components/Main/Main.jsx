@@ -6,12 +6,12 @@ const Main = () => {
   return (
     <div className='main'>
       <div className="nav">
-        <p>Ai-Cutie </p>
-        <img src={assets.user_icon} alt="" />
+        <p>Ai-QT </p>
+        <img src={assets.user} alt="" />
       </div>
       <div className="main-container">
         <div className="greet">
-            <p><span>Hello, Sukhi Sir</span></p>
+            <p><span>Hello, User</span></p>
             <p>How Can I help you today?</p>
         </div>
         <div className="cards">
