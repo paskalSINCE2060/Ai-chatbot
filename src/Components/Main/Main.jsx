@@ -3,33 +3,26 @@ import './Main.css';
 import { assets } from '../../assets/assets';
 
 const Main = () => {
-
   const [input, setInput] = useState('');
+  const [responseText, setResponseText] = useState(null); // New state for API response
 
   const HandleResponse = async (e) => {
     e.preventDefault();
-    console.log("hello", input);
+    console.log("User Input:", input);
 
     const api_url = "https://openrouter.ai/api/v1/chat/completions";
-    const api_key = "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";
+    const api_key = "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";
 
     try {
       const response = await fetch(api_url, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${api_key}`,
-          "HTTP-Referer": "<YOUR_SITE_URL>", // Optional
-          "X-Title": "<YOUR_SITE_NAME>", // Optional
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           "model": "deepseek/deepseek-r1-distill-llama-70b:free",
-          "messages": [
-            {
-              "role": "user",
-              "content": input  // Using user input instead of a hardcoded value
-            }
-          ]
+          "messages": [{ "role": "user", "content": input }]
         })
       });
 
@@ -37,11 +30,12 @@ const Main = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data = await response.json(); // Convert response to JSON
-      console.log("API Response:", data);
-      console.log("QT ", data?.choices[0]?.message?.content)
+      const data = await response.json();
+      const reply = data?.choices[0]?.message?.content || "No response received.";
+      setResponseText(reply); // Store response
     } catch (error) {
       console.error("Error fetching data:", error);
+      setResponseText("Error fetching response.");
     }
   };
 
@@ -52,6 +46,13 @@ const Main = () => {
         <img src={assets.user} alt="" />
       </div>
       <div className="main-container">
+      {responseText ? (
+          <div className="response-box">
+            <p className="response-title">Response:</p>
+            <p className="response-text">{responseText}</p>
+          </div>
+        ) : (
+          <>
         <div className="greet">
             <p><span>Hello, User</span></p>
             <p>How Can I help you today?</p>
@@ -74,6 +75,8 @@ const Main = () => {
                 <img src={assets.code_icon} alt="" />
             </div>
         </div>
+        </>
+        )}
         <div className="main-bottom">
             <div className="search-box">
                 <input type="text" placeholder='Enter a propt here' id="user_input"value={input}

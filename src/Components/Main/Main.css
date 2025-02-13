@@ -98,7 +98,6 @@
 .search-box div{
     display: flex;
     align-items: center;
-    gap: 15px;
 }
 .main .bottom-info{
     font-size: 13px;
